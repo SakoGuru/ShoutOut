@@ -1,6 +1,9 @@
 package com.prototype.shoutout.shoutoutprototype;
 
+import android.location.Location;
+
 import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationClient;
 
 //A shout is the following
 public class Shouts {
@@ -20,7 +23,7 @@ public class Shouts {
     @com.google.gson.annotations.SerializedName("user")
     private String mUser;
 
-    private Geofence mLocation;
+    private Location mLocation;
 
     //Default Constructor
     public Shouts() {
@@ -28,7 +31,7 @@ public class Shouts {
     }
 
     //Constructor
-    public Shouts(String id, String title, String shout, String user, Geofence location){
+    public Shouts(String id, String title, String shout, String user, Location location){
         this.setId(id);
         this.setTitle(title);
         this.setShout(shout);
@@ -58,7 +61,7 @@ public class Shouts {
         return mUser;
     }
 
-    public Geofence getLocation(){
+    public Location getLocation(){
         return mLocation;
     }
 
@@ -78,7 +81,7 @@ public class Shouts {
         mShout = shout;
     }
 
-    public final void setLocation(Geofence location){
+    public final void setLocation(Location location){
         mLocation = location;
     }
 }

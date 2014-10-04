@@ -4,6 +4,7 @@ import static com.microsoft.windowsazure.mobileservices.MobileServiceQueryOperat
 
 import android.app.Activity;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -17,6 +18,8 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 //Azure Services
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
 import com.microsoft.windowsazure.mobileservices.NextServiceFilterCallback;
@@ -45,6 +48,9 @@ public class Authenticate extends Activity {
     private ProgressBar mProgressBar;
 
     private MobileServiceClient mClient;
+
+    //Location Client
+    public LocationClient mLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,40 +99,25 @@ public class Authenticate extends Activity {
         return true;
     }
 
-    /**
-     * Mark an item as completed
-     *
-     * @param shout
-     *            The item to mark
-     */
-    public void checkItem(Shouts shout) {
+        //Add a new shout
+        public void addItem(View view) {
         if (mClient == null) {
             return;
         }
 
-        mShoutsTable.update(shout, new TableOperationCallback<Shouts>() {
+        //mLocationClient = new LocationClient(this, null, null);
 
-            public void onCompleted(Shouts entity, Exception exception, ServiceFilterResponse response) {
-                if (exception == null) {
+        //mLocationClient.connect();
+        // When the location client is connected, set mock mode
+        //mLocationClient.setMockMode(true);
 
-                    mView.remove(entity);
-
-                } else {
-                    createAndShowDialog(exception, "Error");
-                }
-            }
-
-        });
-    }
-
-    //Add a new shout
-    public void addItem(View view) {
-        if (mClient == null) {
-            return;
-        }
+        //mLocationClient.setMockLocation(createLocation(37.0, -120.25, 4.0f));
 
         // Create a new shout item
-        Shouts shouts = new Shouts();
+        //TODO Make this an actual call
+        Shouts shouts = new Shouts("1","Title","ShoutOut","User", createLocation(37.0, -120.25, 4.0f));
+
+        //mLocationClient.disconnect();
 
         shouts.setShout(mNewShout.getText().toString());
 
@@ -149,9 +140,18 @@ public class Authenticate extends Activity {
         mNewShout.setText("");
     }
 
-    /**
-     * Refresh the list with the items in the Mobile Service Table
-     */
+    //Create a new Location
+    public Location createLocation(double lat, double lng, float accuracy) {
+        // Create a new Location
+        Location newLocation = new Location("flp");
+        newLocation.setLatitude(lat);
+        newLocation.setLongitude(lng);
+        newLocation.setAccuracy(accuracy);
+        return newLocation;
+    }
+
+
+    //Refresh to get newest Shouts from DB
     private void refreshItemsFromTable() {
 
         // Get the items that weren't marked as completed and add them in the
@@ -173,14 +173,7 @@ public class Authenticate extends Activity {
         });
     }
 
-    /**
-     * Creates a dialog and shows it
-     *
-     * @param exception
-     *            The exception to show in the dialog
-     * @param title
-     *            The dialog title
-     */
+    //Show Dialog
     private void createAndShowDialog(Exception exception, String title) {
         Throwable ex = exception;
         if(exception.getCause() != null){
@@ -189,14 +182,7 @@ public class Authenticate extends Activity {
         createAndShowDialog(ex.getMessage(), title);
     }
 
-    /**
-     * Creates a dialog and shows it
-     *
-     * @param message
-     *            The dialog message
-     * @param title
-     *            The dialog title
-     */
+    //Diag Box
     private void createAndShowDialog(String message, String title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -241,11 +227,11 @@ public class Authenticate extends Activity {
         // Get the Mobile Service Table instance to use
         mShoutsTable = mClient.getTable(Shouts.class);
 
-        mNewShout = (EditText) findViewById(R.id.textNewToDo);
+        mNewShout = (EditText) findViewById(R.id.mNewShouts);
 
         // Create an adapter to bind the items with the view
         mView = new ShoutsView(this, R.layout.row_list_shouts);
-        ListView listViewToDo = (ListView) findViewById(R.id.listViewToDo);
+        ListView listViewToDo = (ListView) findViewById(R.id.listViewShouts);
         listViewToDo.setAdapter(mView);
 
         // Load the items from the Mobile Service
