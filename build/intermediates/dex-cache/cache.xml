@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="C:\Dev\git\ShoutOut\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.0-rc1-d3f96830dac8777cca7916245688d12cc8111295.jar"
+        jar="C:\Program Files (x86)\Android\android-studio\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.0-rc1\support-annotations-21.0.0-rc1.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="57c343f05b73b923bf2502b05851dbfe12193dcb"/>
+    <item
+        dex="C:\Dev\git\ShoutOut\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.0-rc1-fc8696564a5151ba68dec11ff2e695a98453135f.jar"
+        jar="C:\Dev\git\ShoutOut\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0-rc1\libs\internal_impl-21.0.0-rc1.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="d1a625e8a94bf7c73e0f9d30ad1b483ff6ea64e9"/>
+    <item
+        dex="C:\Dev\git\ShoutOut\app\build\intermediates\pre-dexed\debug\mobileservices-1.1.5-99b202371c1de74e448631b86eb66e89c1e6e804.jar"
+        jar="C:\Dev\git\ShoutOut\app\libs\mobileservices-1.1.5.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="12188408c45b88124cb38dd2bedc9b314b5f554b"/>
+    <item
+        dex="C:\Dev\git\ShoutOut\app\build\intermediates\pre-dexed\debug\notification-hubs-0.4-f8edc5a5386039312c8a8c32f01fbb93796ab2de.jar"
+        jar="C:\Dev\git\ShoutOut\app\libs\notification-hubs-0.4.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="341cf8ef72f7244597c95190386787eef19120a4"/>
+    <item
+        dex="C:\Dev\git\ShoutOut\app\build\intermediates\pre-dexed\debug\classes-d61bc45864dc4995496e4661e3f0ee4f3136e101.jar"
+        jar="C:\Dev\git\ShoutOut\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.0-rc1\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="f43ddb172b0a91aa546a2aec7e6aad71c935d036"/>
+    <item
+        dex="C:\Dev\git\ShoutOut\app\build\intermediates\pre-dexed\debug\notifications-1.0.1-90e39c61bf69c75b47a69a79ca54ba9b89f4b777.jar"
+        jar="C:\Dev\git\ShoutOut\app\libs\notifications-1.0.1.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="d2498fce7adbdb5ebd37dafc56d8056db60f51fe"/>
+    <item
+        dex="C:\Dev\git\ShoutOut\app\build\intermediates\pre-dexed\debug\classes-a3619e97239d7e22ee2d97644c4a23d7f2f8510c.jar"
+        jar="C:\Dev\git\ShoutOut\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\5.2.08\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="1ed7a7a05185651f9af41ad93711cb96b66f331c"/>
+    <item
+        dex="C:\Dev\git\ShoutOut\app\build\intermediates\pre-dexed\debug\classes-8628f43bea8b0b54590491c1eaa49083f68066e6.jar"
+        jar="C:\Dev\git\ShoutOut\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0-rc1\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="7ae84435ebc95f67a3f5e511025e96caa8688da2"/>
+    <item
+        dex="C:\Dev\git\ShoutOut\app\build\intermediates\pre-dexed\debug\gson-2.2.2-3684ac460bd7323ea3ead18e2b5ea10643a3af41.jar"
+        jar="C:\Dev\git\ShoutOut\app\libs\gson-2.2.2.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="53bfcd3c8e310d1493b2691484525ed90b04e236"/>
+
+</pre-dex-items>

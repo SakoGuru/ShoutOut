@@ -23,7 +23,7 @@ public class Shouts {
     @com.google.gson.annotations.SerializedName("user")
     private String mUser;
 
-    private Location mLocation;
+    private google.maps.LatLng mLocation;
 
     //Default Constructor
     public Shouts() {
