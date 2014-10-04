@@ -14,11 +14,15 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+//Cacheing for login
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+
 import java.net.MalformedURLException;
 import java.util.List;
 
 //Azure Services
-import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
@@ -51,6 +55,11 @@ public class Authenticate extends Activity {
 
     //Location Client
     public LocationClient mLocationClient;
+
+    //Cache variables
+    public static final String SHAREDPREFFILE = "temp";
+    public static final String USERIDPREF = "uid";
+    public static final String TOKENPREF = "tkn";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +108,8 @@ public class Authenticate extends Activity {
         return true;
     }
 
-        //Add a new shout
-        public void addItem(View view) {
+    //Add a new shout
+    public void addItem(View view) {
         if (mClient == null) {
             return;
         }
@@ -150,6 +159,34 @@ public class Authenticate extends Activity {
         return newLocation;
     }
 
+    //Cache Token function (so we don't hit the server to authenticate every time)
+    //Could use some encryption, but "ain't nobody got time for that."
+    private void cacheUserToken(MobileServiceUser user)
+    {
+        SharedPreferences prefs = getSharedPreferences(SHAREDPREFFILE, Context.MODE_PRIVATE);
+        Editor editor = prefs.edit();
+        editor.putString(USERIDPREF, user.getUserId());
+        editor.putString(TOKENPREF, user.getAuthenticationToken());
+        editor.commit();
+    }
+
+    //Load in the cached user token.
+    private boolean loadUserTokenCache(MobileServiceClient client)
+    {
+        SharedPreferences prefs = getSharedPreferences(SHAREDPREFFILE, Context.MODE_PRIVATE);
+        String userId = prefs.getString(USERIDPREF, "undefined");
+        if (userId == "undefined")
+            return false;
+        String token = prefs.getString(TOKENPREF, "undefined");
+        if (token == "undefined")
+            return false;
+
+        MobileServiceUser user = new MobileServiceUser(userId);
+        user.setAuthenticationToken(token);
+        client.setCurrentUser(user);
+
+        return true;
+    }
 
     //Refresh to get newest Shouts from DB
     private void refreshItemsFromTable() {
@@ -240,46 +277,54 @@ public class Authenticate extends Activity {
 
     private void authenticateGoogle() {
 
-        // Login using the Google provider.
-        mClient.login(MobileServiceAuthenticationProvider.Google,
-                new UserAuthenticationCallback() {
-
-                    @Override
-                    public void onCompleted(MobileServiceUser user,
-                                            Exception exception, ServiceFilterResponse response) {
-
-                        if (exception == null) {
-                            createAndShowDialog(String.format(
-                                    "You are now logged in - %1$2s",
-                                    user.getUserId()), "Success");
-                            createTable();
-                        } else {
-                            createAndShowDialog("You must log in. Login Required", "Error");
+        // We first try to load a token cache if one exists.
+        if (loadUserTokenCache(mClient))
+        {
+            createTable();
+        }
+        // If we failed to load a token cache, login and create a token cache
+        else
+        {
+            // Login using the provider.
+            mClient.login(MobileServiceAuthenticationProvider.Google,
+                    new UserAuthenticationCallback() {
+                        @Override
+                        public void onCompleted(MobileServiceUser user,
+                                                Exception exception, ServiceFilterResponse response) {
+                            if (exception == null) {
+                                cacheUserToken(mClient.getCurrentUser());
+                                createTable();
+                            } else {
+                                createAndShowDialog("You must log in. Login Required", "Error");
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     private void authenticateMicrosoft() {
 
-        // Login using the Microsoft provider.
-        mClient.login(MobileServiceAuthenticationProvider.MicrosoftAccount,
-                new UserAuthenticationCallback() {
-
-                    @Override
-                    public void onCompleted(MobileServiceUser user,
-                                            Exception exception, ServiceFilterResponse response) {
-
-                        if (exception == null) {
-                            createAndShowDialog(String.format(
-                                    "You are now logged in - %1$2s",
-                                    user.getUserId()), "Success");
-                            createTable();
-                        } else {
-                            createAndShowDialog("You must log in. Login Required", "Error");
+        // We first try to load a token cache if one exists.
+        if (loadUserTokenCache(mClient)) {
+            createTable();
+        }
+        // If we failed to load a token cache, login and create a token cache
+        else {
+            // Login using the provider.
+            mClient.login(MobileServiceAuthenticationProvider.MicrosoftAccount,
+                    new UserAuthenticationCallback() {
+                        @Override
+                        public void onCompleted(MobileServiceUser user,
+                                                Exception exception, ServiceFilterResponse response) {
+                            if (exception == null) {
+                                cacheUserToken(mClient.getCurrentUser());
+                                createTable();
+                            } else {
+                                createAndShowDialog("You must log in. Login Required", "Error");
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 }
 
